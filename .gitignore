@@ -1,0 +1,13 @@
+data/
+logs/
+*.pyc
+__pycache__/
+.env
+*.csv
+*.zip
+config/config.env
+secrets/
+*.log
+.DS_Store
+.vscode/
+.idea/
