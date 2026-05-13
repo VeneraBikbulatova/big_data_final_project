@@ -18,6 +18,8 @@ Project Structure
   - stage4.sh: Deployment of results to Apache Superset via Hive registration.
   - main.sh: Main orchestrator for the end-to-end pipeline.
   - stage1.sh - stage4.sh: Individual scripts to run specific stages.
+  - presentation_big_data: project presentation
+  - report_big_data: project report
 
 Execution
 
@@ -46,6 +48,8 @@ Technical Overview
     addressing a 56:1 class imbalance.
   - Evaluation: Simulation of economic impact using a price-surge model to
     validate price elasticity and marketing lift.
+
+Link for video: https://drive.google.com/file/d/16UvSFpxvPrT47QYdz_ksGUSNWNZEoHAc/view?usp=drive_link
 
 Authors
 
