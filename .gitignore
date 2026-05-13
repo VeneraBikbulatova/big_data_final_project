@@ -11,3 +11,14 @@ secrets/
 .DS_Store
 .vscode/
 .idea/
+metastore_db/
+output/.crc
+output/*.crc
+*.log
+*.lck
+*.ctrl
+*.dat
+__pycache__/
+*.pyc
+codegen_events.java
+download.py

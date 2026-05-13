@@ -4,7 +4,7 @@ source config/config.env
 hdfs dfs -mkdir -p /user/team9/ecommerce_project
 
 sqoop import \
---connect jdbc:postgresql://hadoop-01.uni.innopolis.ru:5432/team9_projectdb \
+--connect jdbc:postgresql://hadoop-04.uni.innopolis.ru:5432/team9_projectdb \
 --username team9 \
 --password $PG_PASSWORD \
 --table events \

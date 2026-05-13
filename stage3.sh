@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Stage 3 wrapper - PySpark ML on YARN.
+# Idempotent: wipes HDFS output dir before every run.
+# Ships the refactored cyclical_encoder.py via --py-files.
+
 set -euo pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -11,14 +16,21 @@ exec > >(tee -a "${LOG_FILE}") 2>&1
 echo "  STAGE 3 - PREDICTIVE DATA ANALYTICS"
 echo "  Started: $(date)"
 
+# ---- Tunable via env ----
 export HIVE_TABLE="${HIVE_TABLE:-team9_projectdb.events_partitioned}"
 export HDFS_OUT_DIR="${HDFS_OUT_DIR:-/user/team9/project/stage3}"
-export SAMPLE_FRACTION="${SAMPLE_FRACTION:-1.0}"
+export SAMPLE_FRACTION="${SAMPLE_FRACTION:-1.0}"   # e.g. 0.05 for a quick smoke test
 
+# ---- Idempotency: clear previous outputs ----
 echo "[INFO] Clearing previous HDFS outputs at ${HDFS_OUT_DIR}"
 hdfs dfs -rm -r -f -skipTrash "${HDFS_OUT_DIR}" 2>/dev/null || true
 hdfs dfs -mkdir -p "${HDFS_OUT_DIR}"
 
+# ---- Submit to YARN ----
+# 3-node cluster, 42M rows, four CV-tuned models (24 fits total):
+#   3 executors x (3 cores, 5G heap + 1G overhead) = 9 cores, 18G total
+#   driver: 3G
+# AQE on, skew-join on, Kryo, generous timeouts for long shuffles.
 spark-submit \
     --master yarn \
     --deploy-mode client \

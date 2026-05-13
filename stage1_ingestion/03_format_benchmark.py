@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 import time
 import shutil
 from pyspark.sql import SparkSession
@@ -7,7 +8,7 @@ from pyspark.sql import functions as F
 
 RAW_DATA_DIR = os.environ['RAW_DATA_DIR']
 DATA_FILE = os.environ['DATA_FILE']
-CSV_PATH = os.path.join(RAW_DATA_DIR, DATA_FILE)
+CSV_PATH = "file://" + os.path.join(RAW_DATA_DIR, DATA_FILE)
 TMP_DIR = "/tmp/format_benchmark"
 SAMPLE_ROWS = 5_000_000 # reduced for testing purposes
 

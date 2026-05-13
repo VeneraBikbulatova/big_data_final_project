@@ -26,18 +26,6 @@ def _connect(dbname=None):
     )
 
 
-def create_database():
-    conn = _connect(dbname='postgres')
-    conn.autocommit = True
-    with conn.cursor() as cur:
-        cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (PG_DB,))
-        if cur.fetchone() is None:
-            print(f"[INFO] Creating database '{PG_DB}' ...")
-            cur.execute(f'CREATE DATABASE "{PG_DB}"')
-        else:
-            print(f"[INFO] Database '{PG_DB}' already exists.")
-    conn.close()
-
 def apply_schema():
     print(f"[INFO] Applying schema from {SCHEMA_FILE} ...")
     with open(SCHEMA_FILE, 'r') as f:
@@ -81,7 +69,21 @@ def bulk_load_csv():
 
 
 def main():
-    create_database()
+    conn = _connect()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = %s", (PG_TABLE,))
+    table_exists = cur.fetchone()[0] > 0
+    
+    if table_exists:
+        cur.execute(f"SELECT COUNT(*) FROM {PG_TABLE}")
+        count = cur.fetchone()[0]
+        if count > 0:
+            print(f"[INFO] Table {PG_TABLE} already has {count} rows. Skipping load.")
+            conn.close()
+            return
+    conn.close()
+    
+    ensure_database_exists()
     apply_schema()
     bulk_load_csv()
 
