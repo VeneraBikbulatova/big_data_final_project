@@ -49,7 +49,7 @@ Technical Overview
   - Evaluation: Simulation of economic impact using a price-surge model to
     validate price elasticity and marketing lift.
 
-Link for video: https://drive.google.com/file/d/16UvSFpxvPrT47QYdz_ksGUSNWNZEoHAc/view?usp=drive_link
+Link for video: https://drive.google.com/file/d/16UvSFpxvPrT47QYdz_ksGUSNWNZEoHAc/view?usp=sharing
 
 Authors
 
